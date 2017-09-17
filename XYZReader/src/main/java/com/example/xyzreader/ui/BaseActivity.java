@@ -1,7 +1,5 @@
 package com.example.xyzreader.ui;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -17,6 +15,7 @@ import com.example.xyzreader.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Sanchit.Agarwal on 6/20/2017.
@@ -75,11 +74,6 @@ public class BaseActivity extends AppCompatActivity {
         mBackBtn.setVisibility(View.GONE);
     }
 
-    protected void hideNavigationBackButton() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-    }
-
     protected void hideToolBar() {
         mCollapseToolBar.setVisibility(View.GONE);
     }
@@ -88,5 +82,9 @@ public class BaseActivity extends AppCompatActivity {
         mCollapseToolBar.setVisibility(View.VISIBLE);
     }
 
+    @OnClick (R.id.back_btn)
+    public void onBack() {
+        onBackPressed();
+    }
 }
 

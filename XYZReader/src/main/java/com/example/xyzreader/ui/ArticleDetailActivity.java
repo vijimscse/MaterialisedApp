@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -47,8 +46,7 @@ public class ArticleDetailActivity extends BaseActivity
         }
         setContentView(R.layout.activity_article_detail);
         showBackBtn();
-        showBanner();
-      //  showNavigationBackButton();
+        hideBanner();
         getLoaderManager().initLoader(0, null, this);
 
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());

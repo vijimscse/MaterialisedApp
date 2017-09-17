@@ -16,6 +16,7 @@ import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.UpdaterService;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 
 /**
@@ -24,8 +25,7 @@ import butterknife.BindView;
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
  */
-public class ArticleListActivity extends BaseActivity implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class ArticleListActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleListActivity.class.getSimpleName();
 
@@ -35,11 +35,15 @@ public class ArticleListActivity extends BaseActivity implements
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
+    @BindInt(R.integer.list_column_count)
+    int mColumnCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.article_list);
         setActivityTitle(getString(R.string.app_name));
+        showBanner();
         hideBackBtn();
         getLoaderManager().initLoader(0, null, this);
         if (savedInstanceState == null) {
@@ -98,8 +102,8 @@ public class ArticleListActivity extends BaseActivity implements
         ArticleListAdapter articleListAdapter = new ArticleListAdapter(this, cursor);
         articleListAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(articleListAdapter);
-        int columnCount = getResources().getInteger(R.integer.list_column_count);
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
+
+        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(mColumnCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(sglm);
     }
 

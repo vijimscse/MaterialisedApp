@@ -1,22 +1,25 @@
 package com.example.xyzreader.ui;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
- import android.text.format.DateUtils;
- import android.view.LayoutInflater;
- import android.view.View;
- import android.view.ViewGroup;
+import android.text.format.DateUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
- import com.example.xyzreader.R;
- import com.example.xyzreader.data.ArticleLoader;
- import com.example.xyzreader.data.ItemsContract;
+import com.example.xyzreader.R;
+import com.example.xyzreader.data.ArticleLoader;
+import com.example.xyzreader.data.ItemsContract;
+import com.squareup.picasso.Picasso;
 
- import java.text.SimpleDateFormat;
- import java.util.Date;
- import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
  /**
  * Created by Vijayalakshmi on 9/17/2017.
@@ -49,8 +52,14 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleItemViewHold
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW,
-                        ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+                ActivityOptions options = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, vh.thumbnailView,
+                            mContext.getString(R.string.picture_transition_name));
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
+                    mContext.startActivity(intent, options.toBundle());
+                }
             }
         });
         return vh;
@@ -76,10 +85,15 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleItemViewHold
                             + "<br/>" + " by "
                             + mCursor.getString(ArticleLoader.Query.AUTHOR)));
         }
-        holder.thumbnailView.setImageUrl(
+
+        Picasso.with(mContext).load(mCursor.getString(ArticleLoader.Query.THUMB_URL)).into(holder.thumbnailView);
+
+       /* holder.thumbnailView.setImageUrl(
                 mCursor.getString(ArticleLoader.Query.THUMB_URL),
                 ImageLoaderHelper.getInstance(mContext).getImageLoader());
-        holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+        holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));*/
+
+
     }
 
     @Override

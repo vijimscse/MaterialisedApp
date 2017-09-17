@@ -28,6 +28,7 @@ dependencies {
     compile files('libs/volley.jar')
     compile 'com.jakewharton:butterknife:8.7.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile "com.android.support:support-v4:$androidSupportVersion"
     compile "com.android.support:support-v13:$androidSupportVersion"

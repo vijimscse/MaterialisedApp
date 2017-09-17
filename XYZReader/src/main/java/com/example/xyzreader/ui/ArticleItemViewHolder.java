@@ -2,6 +2,7 @@ package com.example.xyzreader.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
@@ -14,7 +15,7 @@ import butterknife.ButterKnife;
  */
 public class ArticleItemViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.thumbnail)
-    DynamicHeightNetworkImageView thumbnailView;
+    ImageView thumbnailView;
 
     @BindView(R.id.article_title)
     public TextView titleView;
@@ -26,6 +27,5 @@ public class ArticleItemViewHolder extends RecyclerView.ViewHolder {
         super(view);
 
         ButterKnife.bind(this, view);
-
     }
 }

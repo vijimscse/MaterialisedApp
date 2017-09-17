@@ -14,13 +14,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/common_padding"
+        android:paddingStart="@dimen/common_padding"
+        android:paddingRight="@dimen/common_padding"
+        android:paddingEnd="@dimen/common_padding"
         android:orientation="vertical">
 
-        <!--suppress AndroidLintContentDescription -->
-        <com.example.xyzreader.ui.DynamicHeightNetworkImageView
+        <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/article_thumbnail_height"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/content_desc_thumbnail"
             android:background="@color/photo_placeholder" />
 
         <TextView
@@ -28,11 +33,10 @@
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/common_padding"
             android:paddingTop="@dimen/common_padding"
-            android:paddingRight="@dimen/common_padding"
             android:paddingBottom="@dimen/dimen_4"
             android:ellipsize="end"
+            android:textStyle="bold"
             android:maxLines="1" />
 
         <TextView
@@ -40,8 +44,6 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/common_padding"
-            android:paddingRight="@dimen/common_padding"
             android:paddingBottom="@dimen/common_padding"
             android:maxLines="1"
             android:ellipsize="end" />
