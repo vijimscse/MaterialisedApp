@@ -46,7 +46,7 @@ public class ArticleDetailActivity extends BaseActivity
         }
         setContentView(R.layout.activity_article_detail);
         showBackBtn();
-        hideBanner();
+        showBanner();
         getLoaderManager().initLoader(0, null, this);
 
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());

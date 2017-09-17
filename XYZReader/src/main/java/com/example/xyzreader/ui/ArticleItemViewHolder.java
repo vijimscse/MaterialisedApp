@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
  * Created by Vijayalakshmi on 9/17/2017.
  */
 public class ArticleItemViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.thumbnail)
+    @BindView(R.id.banner_image)
     ImageView thumbnailView;
 
     @BindView(R.id.article_title)
