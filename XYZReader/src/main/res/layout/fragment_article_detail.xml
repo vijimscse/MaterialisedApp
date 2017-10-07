@@ -33,17 +33,20 @@
                 <TextView
                     android:id="@+id/article_title"
                     style="?android:attr/textAppearanceLarge"
+                    android:background="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingMultiplier="0.9"
                     android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
                     android:textSize="@dimen/detail_title_text_size"
+                    android:textColor="@android:color/white"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/article_byline"
                     style="?android:attr/textAppearanceSmall"
+                    android:background="@android:color/transparent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white" />

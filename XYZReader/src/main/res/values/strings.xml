@@ -10,5 +10,6 @@
     <string name="up">Up</string>
     <string name="content_desc_thumbnail">Article thumbnail</string>
     <string name="picture_transition_name">banner_image</string>
+    <string name="not_applicable">N/A</string>
 
 </resources>

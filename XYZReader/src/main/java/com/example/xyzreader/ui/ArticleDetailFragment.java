@@ -52,7 +52,7 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
     private IImageLoadListener mImageLoadListener;
 
     public interface IImageLoadListener {
@@ -71,12 +71,12 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mImageLoadListener =  castToImageLoadListener(context);
+        mImageLoadListener = castToImageLoadListener(context);
     }
 
     private IImageLoadListener castToImageLoadListener(Context context) {
-        if (! (context instanceof IImageLoadListener)) {
-            throw new IllegalStateException(((FragmentActivity)context).getClass().getSimpleName() +  "must implement" + IImageLoadListener.class.getSimpleName());
+        if (!(context instanceof IImageLoadListener)) {
+            throw new IllegalStateException(((FragmentActivity) context).getClass().getSimpleName() + "must implement" + IImageLoadListener.class.getSimpleName());
         }
 
         return (IImageLoadListener) context;
@@ -101,7 +101,7 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
         bindViews();
@@ -135,20 +135,20 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
             titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-                bylineView.setText(Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + " by <font color='#ffffff'>"
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+
+                bylineView.setText(Html.fromHtml(DateUtils.getRelativeTimeSpanString(
+                        publishedDate.getTime(),
+                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_ALL).toString()
+                        + " by <font color='#ffffff'>"
+                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                        + "</font>"));
 
             } else {
                 // If date is before 1902, just show the string
                 bylineView.setText(Html.fromHtml(
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
 
             }
@@ -156,9 +156,9 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
             mImageLoadListener.onImageLoaded(mCursor.getString(ArticleLoader.Query.PHOTO_URL));
         } else {
             mRootView.setVisibility(View.GONE);
-            titleView.setText("N/A");
-            bylineView.setText("N/A" );
-            bodyView.setText("N/A");
+            titleView.setText(R.string.not_applicable);
+            bylineView.setText(R.string.not_applicable);
+            bodyView.setText(R.string.not_applicable);
         }
     }
 
