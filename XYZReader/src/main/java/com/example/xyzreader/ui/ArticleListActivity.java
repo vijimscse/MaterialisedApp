@@ -45,6 +45,7 @@ public class ArticleListActivity extends BaseActivity implements LoaderManager.L
         setActivityTitle(getString(R.string.app_name));
         showBanner();
         hideBackBtn();
+        hideShareFAB();
         getLoaderManager().initLoader(0, null, this);
         if (savedInstanceState == null) {
             refresh();

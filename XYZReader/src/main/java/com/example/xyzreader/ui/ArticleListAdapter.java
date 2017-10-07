@@ -54,11 +54,11 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleItemViewHold
             public void onClick(View view) {
                 ActivityOptions options = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, vh.thumbnailView,
-                            mContext.getString(R.string.picture_transition_name));
+                   /* options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, vh.thumbnailView,
+                            mContext.getString(R.string.picture_transition_name));*/
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
-                    mContext.startActivity(intent, options.toBundle());
+                    mContext.startActivity(intent/*, options.toBundle()*/);
                 }
             }
         });

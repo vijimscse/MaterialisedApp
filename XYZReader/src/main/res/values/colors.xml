@@ -21,4 +21,5 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#37474f</color>
     <color name="back_btn_background">#20000000</color>
+    <color name="list_text_item_background">#2d5b64</color>
 </resources>

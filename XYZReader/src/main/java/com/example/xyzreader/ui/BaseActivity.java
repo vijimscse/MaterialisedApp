@@ -3,6 +3,7 @@ package com.example.xyzreader.ui;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -42,6 +43,9 @@ public class BaseActivity extends AppCompatActivity {
 
     @BindView(R.id.banner_image)
     View mLayoutUpperHalfView;
+
+    @BindView(R.id.share_fab)
+    FloatingActionButton mShareFAB;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -85,6 +89,14 @@ public class BaseActivity extends AppCompatActivity {
     @OnClick (R.id.back_btn)
     public void onBack() {
         onBackPressed();
+    }
+
+    protected void hideShareFAB() {
+        mShareFAB.setVisibility(View.GONE);
+    }
+
+    protected void showShareFAB() {
+        mShareFAB.setVisibility(View.VISIBLE);
     }
 }
 

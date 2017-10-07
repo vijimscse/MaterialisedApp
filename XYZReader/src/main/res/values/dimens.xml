@@ -13,5 +13,6 @@
     <dimen name="dimen_4">4dp</dimen>
     <dimen name="toolbar_height">?android:attr/actionBarSize</dimen>
     <dimen name="banner_height">150dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
 
 </resources>
