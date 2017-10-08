@@ -5,6 +5,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.transition.TransitionInflater;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -59,6 +60,8 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleItemViewHold
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
                     mContext.startActivity(intent, options.toBundle());
+                } else {
+                    mContext.startActivity(new Intent(Intent.ACTION_VIEW));
                 }
             }
         });

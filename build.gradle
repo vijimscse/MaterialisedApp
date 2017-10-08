@@ -22,7 +22,8 @@ allprojects {
 
     ext {
         androidSupportVersion = "26.1.0"
-
+        butterknifeVersion = "8.7.0"
+        retrofitVersion = "2.0.0-beta4"
     }
 }
 
