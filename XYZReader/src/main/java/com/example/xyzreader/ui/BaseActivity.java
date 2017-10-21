@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapseToolBar;
 
     @BindView(R.id.banner_image)
-    View mLayoutUpperHalfView;
+    ImageView mLayoutUpperHalfView;
 
     @BindView(R.id.share_fab)
     FloatingActionButton mShareFAB;

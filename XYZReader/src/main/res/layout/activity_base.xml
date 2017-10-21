@@ -34,7 +34,6 @@
                 android:layout_marginTop="?android:attr/actionBarSize"
                 android:scaleType="fitXY"
                 android:src="@drawable/news_banner"
-                android:transitionName="@string/picture_transition_name"
                 android:visibility="gone"
                 app:layout_collapseMode="parallax" />
 

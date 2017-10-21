@@ -2,28 +2,28 @@ package com.example.xyzreader.ui;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ShareCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
+import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * A fragment representing a single Article detail screen. This fragment is
@@ -34,20 +34,24 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
     private static final String TAG = ArticleDetailFragment.class.getSimpleName();
     public static final String ARG_ITEM_ID = "item_id";
 
-    private Cursor mCursor;
+    @BindView(R.id.article_title)
+    TextView mTitleView;
+
+    @BindView(R.id.article_date_author_text)
+    TextView mDateAndAuthorView;
+
+    @BindView(R.id.article_body)
+    TextView mBodyView;
+
+    @BindView(R.id.banner_image)
+    ImageView mBannerImageView;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    private Unbinder mBinder;
+
     private long mItemId;
-    private View mRootView;
-
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
-    // Use default locale format
-    private SimpleDateFormat outputFormat = new SimpleDateFormat();
-    // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
-    private IImageLoadListener mImageLoadListener;
-
-    public interface IImageLoadListener {
-        void onImageLoaded(String url);
-    }
 
     public static ArticleDetailFragment newInstance(long itemId) {
         Bundle arguments = new Bundle();
@@ -55,21 +59,6 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        mImageLoadListener = castToImageLoadListener(context);
-    }
-
-    private IImageLoadListener castToImageLoadListener(Context context) {
-        if (!(context instanceof IImageLoadListener)) {
-            throw new IllegalStateException(((FragmentActivity) context).getClass().getSimpleName() + "must implement" + IImageLoadListener.class.getSimpleName());
-        }
-
-        return (IImageLoadListener) context;
     }
 
     @Override
@@ -83,73 +72,19 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_article_detail, container, false);
+
+        mBinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         getLoaderManager().initLoader(0, null, this);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
-
-        bindViews();
-        return mRootView;
-    }
-
-    private Date parsePublishedDate() {
-        try {
-            String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
-            return dateFormat.parse(date);
-        } catch (ParseException ex) {
-            Log.e(TAG, ex.getMessage());
-            Log.i(TAG, "passing today's date");
-            return new Date();
-        }
-    }
-
-    private void bindViews() {
-        if (mRootView == null) {
-            return;
-        }
-        TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
-        TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
-        bylineView.setMovementMethod(new LinkMovementMethod());
-        TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
-        if (mCursor != null) {
-            mRootView.setAlpha(0);
-            mRootView.setVisibility(View.VISIBLE);
-            mRootView.animate().alpha(1);
-            titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
-            Date publishedDate = parsePublishedDate();
-            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-
-                bylineView.setText(Html.fromHtml(DateUtils.getRelativeTimeSpanString(
-                        publishedDate.getTime(),
-                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                        DateUtils.FORMAT_ABBREV_ALL).toString()
-                        + " by <font color='#ffffff'>"
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                        + "</font>"));
-
-            } else {
-                // If date is before 1902, just show the string
-                bylineView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
-
-            }
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
-            mImageLoadListener.onImageLoaded(mCursor.getString(ArticleLoader.Query.PHOTO_URL));
-        } else {
-            mRootView.setVisibility(View.GONE);
-            titleView.setText(R.string.not_applicable);
-            bylineView.setText(R.string.not_applicable);
-            bodyView.setText(R.string.not_applicable);
-        }
     }
 
     @Override
@@ -159,26 +94,66 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        if (!isAdded()) {
+        if (!isAdded() || cursor == null || !cursor.moveToFirst()) {
             if (cursor != null) {
                 cursor.close();
             }
             return;
         }
 
-        mCursor = cursor;
-        if (mCursor != null && !mCursor.moveToFirst()) {
-            Log.e(TAG, "Error reading item detail cursor");
-            mCursor.close();
-            mCursor = null;
-        }
+        String title = cursor.getString(ArticleLoader.Query.TITLE);
+        setUpArticleDetails(cursor, title);
+        setUpToolbar(title);
+    }
 
-        bindViews();
+    private void setUpArticleDetails(Cursor cursor, String title) {
+        mTitleView.setText(title);
+        mDateAndAuthorView.setText(Html.fromHtml(DateUtils.getRelativeTimeSpanString(
+                cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
+                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL).toString() + " by "
+                + cursor.getString(ArticleLoader.Query.AUTHOR)));
+
+        mBodyView.setText(Html.fromHtml(cursor.getString(ArticleLoader.Query.BODY)).toString());
+        Picasso.with(getActivity())
+                .load(cursor.getString(ArticleLoader.Query.PHOTO_URL))
+                .placeholder(R.drawable.news_banner)
+                .error(R.drawable.image_error)
+                .into(mBannerImageView);
+    }
+
+    private void setUpToolbar(String title) {
+        if (mToolbar != null) {
+            mToolbar.setTitle(title);
+
+            mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().finish();
+                }
+            });
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mCursor = null;
-        bindViews();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (mBinder != null) {
+            mBinder.unbind();
+        }
+    }
+
+    @OnClick(R.id.share_fab)
+    public void onShare() {
+        startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                .setType("text/plain")
+                .setText("Some sample text")
+                .getIntent(), getString(R.string.action_share)));
     }
 }

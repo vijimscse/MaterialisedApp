@@ -8,9 +8,14 @@ import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -18,6 +23,7 @@ import com.example.xyzreader.data.UpdaterService;
 
 import butterknife.BindInt;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -25,7 +31,7 @@ import butterknife.BindView;
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
  */
-public class ArticleListActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ArticleListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleListActivity.class.getSimpleName();
 
@@ -38,14 +44,30 @@ public class ArticleListActivity extends BaseActivity implements LoaderManager.L
     @BindInt(R.integer.list_column_count)
     int mColumnCount;
 
+    @BindView(R.id.appBarLayout)
+    AppBarLayout mAppBarLayout;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @BindView(R.id.collapse_toolbar)
+    CollapsingToolbarLayout mCollapseToolBar;
+
+    @BindView(R.id.banner_image)
+    ImageView mLayoutUpperHalfView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.article_list);
-        setActivityTitle(getString(R.string.app_name));
-        showBanner();
-        hideBackBtn();
-        hideShareFAB();
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        if (mToolbar != null) {
+            mToolbar.setTitle(getString(R.string.app_name));
+        }
         getLoaderManager().initLoader(0, null, this);
         if (savedInstanceState == null) {
             refresh();
